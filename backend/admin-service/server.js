@@ -14,7 +14,9 @@ const PORT = process.env.PORT || 5001;
 app.use(cors({
     origin: [
         'http://localhost:3000',
-        'https://tiger-tix-flax.vercel.app'
+        'https://tiger-tix-flax.vercel.app',
+        'https://tiger-c3e1d7opq-ryan-murphys-projects-e970bd74.vercel.app',
+        /https:\/\/.*\.vercel\.app$/  // This regex allows ALL *.vercel.app domains
     ],
     credentials: true
 }));
