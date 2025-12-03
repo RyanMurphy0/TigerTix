@@ -7,7 +7,14 @@ const { initDB } = require('./models/userModel');
 const app = express();
 const PORT = process.env.PORT || 5003;
 
-app.use(cors()); // cross-origin requests
+app.use(cors({
+    origin: [
+        'http://localhost:3000',
+        'https://tiger-tix-flax.vercel.app'
+    ],
+    credentials: true
+}));
+
 app.use(express.json()); // parse JSON request bodies
 
 // initialize database
@@ -17,7 +24,7 @@ initDB();
 app.use('/api/auth', authRoutes);
 
 // health check endpoint
-app.get('/health', (req, rest) => {
+app.get('/health', (req, res) => {
     res.status(200).json({ status: 'user authentication service is OK' });
 });
 

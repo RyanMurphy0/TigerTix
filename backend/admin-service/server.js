@@ -4,11 +4,20 @@
  */
 
 const express = require('express');
+const cors = require('cors');
 const { initializeDatabase } = require('./setup');
 const adminRoutes = require('./routes/adminRoutes');    
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+
+app.use(cors({
+    origin: [
+        'http://localhost:3000',
+        'https://tiger-tix-flax.vercel.app'
+    ],
+    credentials: true
+}));
 
 app.use(express.json());
 

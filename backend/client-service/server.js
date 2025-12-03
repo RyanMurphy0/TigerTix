@@ -4,7 +4,15 @@ const bodyParser = require('body-parser');
 const { getAllEvents, purchaseTicket } = require('./models/clientModel');
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+    origin: [
+        'http://localhost:3000',
+        'https://tiger-tix-flax.vercel.app'
+    ],
+    credentials: true
+}));
+
 app.use(bodyParser.json());
 
 // GET all events
