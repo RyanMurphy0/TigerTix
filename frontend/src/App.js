@@ -21,10 +21,10 @@ function App() {
   const confirmationRef = useRef(null);
   const recognitionRef = useRef(null);
 
-  const CLIENT_URL = process.env.REACT_APP_CLIENT_URL || 'http://localhost:6001';
-  const LLM_URL = process.env.REACT_APP_LLM_URL
-    ? process.env.REACT_APP_LLM_URL + '/api/llm/parse'
-    : 'http://localhost:5002/api/llm/parse';
+const CLIENT_URL = process.env.REACT_APP_API_URL || 'http://localhost:6001';
+const LLM_URL = process.env.REACT_APP_LLM_URL
+  ? process.env.REACT_APP_LLM_URL + '/api/llm/parse'
+  : 'http://localhost:5002/api/llm/parse';
 
 // check for user login status on mount
 useEffect(() => {
@@ -61,24 +61,6 @@ useEffect(() => {
       });
   }, [CLIENT_URL, isAuthenticated]);
 
-
-
-  useEffect(() => {
-    fetch(`${CLIENT_URL}/api/events`)
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch events');
-        return res.json();
-      })
-      .then((data) => {
-        setEvents(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError('Unable to load events. Please try again later.');
-        setLoading(false);
-      });
-  }, [CLIENT_URL]);
 
   useEffect(() => {
     if (purchaseMessage && confirmationRef.current) {
