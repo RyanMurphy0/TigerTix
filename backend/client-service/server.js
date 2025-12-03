@@ -28,5 +28,5 @@ app.post('/api/events/:id/purchase', async (req, res) => {
     }
 });
 
-const PORT = 6001;
+const PORT = process.env.PORT || 6001;
 app.listen(PORT, () => console.log(`Client service running on port ${PORT}`));
