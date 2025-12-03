@@ -1,0 +1,77 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      # Test Frontend
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Run Frontend Tests
+        working-directory: ./frontend
+        run: npm test -- --passWithNoTests --watchAll=false
+
+      # Test Admin Service
+      - name: Install Admin Service Dependencies
+        working-directory: ./backend/admin-service
+        run: npm install
+
+      - name: Run Admin Service Tests
+        working-directory: ./backend/admin-service
+        run: npm test -- --passWithNoTests
+
+      # Test Client Service
+      - name: Install Client Service Dependencies
+        working-directory: ./backend/client-service
+        run: npm install
+
+      - name: Run Client Service Tests
+        working-directory: ./backend/client-service
+        run: npm test -- --passWithNoTests
+
+      # Test User Authentication Service
+      - name: Install Auth Service Dependencies
+        working-directory: ./backend/user-authentication
+        run: npm install
+
+      - name: Run Auth Service Tests
+        working-directory: ./backend/user-authentication
+        run: npm test -- --passWithNoTests
+
+      # Test LLM Service
+      - name: Install LLM Service Dependencies
+        working-directory: ./backend/llm-service
+        run: npm install
+
+      - name: Run LLM Service Tests
+        working-directory: ./backend/llm-service
+        run: npm test -- --passWithNoTests
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Deployment Status
+        run: |
+          echo "✅ All tests passed!"
+          echo "🚀 Vercel will auto-deploy frontend from main branch"
+          echo "🚀 Render will auto-deploy all backend services from main branch"
